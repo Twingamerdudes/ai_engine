@@ -100,9 +100,12 @@ public class Manager : MonoBehaviour
     {
         if (topcisFile != "")
         {
-            string[] topicsFromFile = File.ReadAllLines(topcisFile);
-            topics.AddRange(topicsFromFile);
-            File.WriteAllText(topcisFile, "");
+            if (File.Exists(topcisFile))
+            {
+                string[] topicsFromFile = File.ReadAllLines(topcisFile);
+                topics.AddRange(topicsFromFile);
+                File.WriteAllText(topcisFile, "");
+            }
         }
         
         if (momentsLaterScreen.GetComponent<AISplash>())
@@ -192,9 +195,12 @@ public class Manager : MonoBehaviour
         //read topic file and add new topics to topics list, then clear the file
         if (topcisFile != "")
         {
-            string[] topicsFromFile = File.ReadAllLines(topcisFile);
-            topics.AddRange(topicsFromFile);
-            File.WriteAllText(topcisFile, "");
+            if (File.Exists(topcisFile))
+            {
+                string[] topicsFromFile = File.ReadAllLines(topcisFile);
+                topics.AddRange(topicsFromFile);
+                File.WriteAllText(topcisFile, "");
+            }
         }
         momentsLaterScreen.SetActive(false);
         if (momentsLaterScreen.GetComponent<AISplash>())
