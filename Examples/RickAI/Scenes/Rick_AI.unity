@@ -185,7 +185,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64679646}
-  m_LocalRotation: {x: 0.031951007, y: -0.000000017331429, z: 5.540395e-10, w: 0.9994895}
+  m_LocalRotation: {x: 0.03195098, y: -0.000000017331429, z: 5.5403904e-10, w: 0.9994895}
   m_LocalPosition: {x: 0, y: 6.34, z: -21.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1891,7 +1891,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.031951007, y: -0.000000017331429, z: 5.540395e-10, w: 0.9994895}
+  m_LocalRotation: {x: 0.03195098, y: -0.000000017331429, z: 5.5403904e-10, w: 0.9994895}
   m_LocalPosition: {x: 0, y: 6.34, z: -21.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7619,6 +7619,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1224592972}
     - target: {fileID: 5231046014617949897, guid: ceec1fae72bb23c49946f2dbf5ba350a, type: 3}
+      propertyPath: topcisFile
+      value: D:\Dumbass Inc\AI_Engine\Topics.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 5231046014617949897, guid: ceec1fae72bb23c49946f2dbf5ba350a, type: 3}
       propertyPath: locationObj
       value: 
       objectReference: {fileID: 67483012}
@@ -7626,6 +7630,10 @@ PrefabInstance:
       propertyPath: momentsLaterScreen
       value: 
       objectReference: {fileID: 520880792}
+    - target: {fileID: 5231046014617949897, guid: ceec1fae72bb23c49946f2dbf5ba350a, type: 3}
+      propertyPath: characters.Array.data[1].name
+      value: Morty
+      objectReference: {fileID: 0}
     - target: {fileID: 5231046014617949897, guid: ceec1fae72bb23c49946f2dbf5ba350a, type: 3}
       propertyPath: characters.Array.data[0].character
       value: 

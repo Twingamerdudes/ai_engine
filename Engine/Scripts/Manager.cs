@@ -150,7 +150,7 @@ public class Manager : MonoBehaviour
                 });
                 topics.Add(response.Choices[0].Text);
             }
-            Location location = locations[UnityEngine.Random.Range(0, locations.Length - 1)];
+            Location location = locations[UnityEngine.Random.Range(0, locations.Length)];
             GenerateDialogue(
                 $"You are an AI that generates {genre.Trim()} content. Your current topic is {topics[0].Trim()}\nGenerate a dialogue between the listed characters here. Characters: {charactersString.Trim()}\nFormat the conversation as (character): (thing);(character they are talking to)\n(another character): (thing);(character they are talking to)\nYou should generate a minimum of " +
                 minimumDialogueLength.ToString() + " pieces of dialogue and a maximum of " +
