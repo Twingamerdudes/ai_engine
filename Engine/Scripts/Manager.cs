@@ -2,6 +2,7 @@ using OpenAI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -34,6 +35,10 @@ public class Manager : MonoBehaviour
     [Tooltip("The topics that the AI will generate dialogue about.")]
     [SerializeField]
     private List<string> topics = new List<string>();
+    
+    [Tooltip("The file that the AI can also generate dialogue from.")]
+    [SerializeField]
+    private string topcisFile;
 
     [Tooltip("The locations that the characters can be in.")] 
     [SerializeField]
@@ -71,7 +76,7 @@ public class Manager : MonoBehaviour
     [Tooltip("Should the AI should generate PG content?")]
     [SerializeField]
     private bool PG;
-    
+
 
     [Serializable]
     [HideInInspector]
@@ -93,6 +98,13 @@ public class Manager : MonoBehaviour
 
     private void Start()
     {
+        if (topcisFile != "")
+        {
+            string[] topicsFromFile = File.ReadAllLines(topcisFile);
+            topics.AddRange(topicsFromFile);
+            File.WriteAllText(topcisFile, "");
+        }
+        
         if (momentsLaterScreen.GetComponent<AISplash>())
         {
             momentsLaterScreen.GetComponent<AISplash>().GenerateSplash(genre);
@@ -177,7 +189,13 @@ public class Manager : MonoBehaviour
         {
             yield return new WaitForSeconds(3f);
         }
-
+        //read topic file and add new topics to topics list, then clear the file
+        if (topcisFile != "")
+        {
+            string[] topicsFromFile = File.ReadAllLines(topcisFile);
+            topics.AddRange(topicsFromFile);
+            File.WriteAllText(topcisFile, "");
+        }
         momentsLaterScreen.SetActive(false);
         if (momentsLaterScreen.GetComponent<AISplash>())
         {
