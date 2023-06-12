@@ -32,7 +32,10 @@ namespace Engine.Scripts
                     characters[i].character.position = Manager.originalPositions[i];
                 }
 
+                vcam.position = new Vector3(0, 6.34f, -21.39f);
+                vcam.eulerAngles = new Vector3(3.662f, 0, 0);
                 characters[i].character.LookAt(vcam.transform);
+                characters[i].character.eulerAngles = new Vector3(0, characters[i].character.eulerAngles.y, 0);
                 characters[i].character.GetComponent<Character>().isMovementAllowed = location.charactersCanMove;
                 characters[i].character.GetComponent<Character>().isLookingAllowed = location.charactersCanLook;
                 if (location.characterContainter != "")

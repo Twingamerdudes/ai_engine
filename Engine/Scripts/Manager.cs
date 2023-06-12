@@ -48,9 +48,9 @@ public class Manager : MonoBehaviour
     [SerializeField]
     private Character[] characters;
     
-    [Tooltip("Should the AI generate topics on it's own?")]
+    [Tooltip("Items that the characters can equip.")]
     [SerializeField]
-    private bool infiniteTopics = false;
+    private Item[] items;
     
     [Tooltip("The media that the AI-generated dialogue will be based on.")]
     [SerializeField]
@@ -76,7 +76,11 @@ public class Manager : MonoBehaviour
     [Tooltip("Should the AI should generate PG content?")]
     [SerializeField]
     private bool PG;
-
+    
+    [Tooltip("Should the AI generate topics on it's own?")]
+    [SerializeField]
+    private bool infiniteTopics = false;
+    
 
     [Serializable]
     [HideInInspector]
@@ -89,6 +93,14 @@ public class Manager : MonoBehaviour
         {
             return name; // Return the name of the character for display purposes
         }
+    }
+
+    [Serializable]
+    private struct Item
+    {
+        public string name;
+        public string keyword;
+        public GameObject itemObj;
     }
 
     private bool _isDoingDialogue = false;
@@ -155,7 +167,7 @@ public class Manager : MonoBehaviour
                 $"You are an AI that generates {genre.Trim()} content. Your current topic is {topics[0].Trim()}\nGenerate a dialogue between the listed characters here. Characters: {charactersString.Trim()}\nFormat the conversation as (character): (thing);(character they are talking to)\n(another character): (thing);(character they are talking to)\nYou should generate a minimum of " +
                 minimumDialogueLength.ToString() + " pieces of dialogue and a maximum of " +
                 maximumDialogueLength.ToString() + " pieces of dialogue.\nYou may also make a character speak " + 
-                maxConsecutiveSpeech.ToString() + " times in a row, but not " + (maxConsecutiveSpeech - 1).ToString() + " times in a row. The characters location is " + location.name + ". " + (!PG ? "You can be offensive.\n" : "\n"), location);
+                maxConsecutiveSpeech.ToString() + " times in a row, but not " + (maxConsecutiveSpeech - 1).ToString() + " times in a row. The characters location is " + location.name + ". " + (!PG ? "You can be offensive." : "\n"), location);
             topics.RemoveAt(0);
         }
         else
@@ -213,27 +225,51 @@ public class Manager : MonoBehaviour
         List<string> dialogue = dialogueText.Split('\n').ToList();
         foreach (string text in dialogue)
         {
-            string characterName = text.Split(":")[0].Trim();
-            Character character = characters.FirstOrDefault(c => c.name == characterName);
-            
-            string subjectName = text.Split(";").Last();
-            string formattedText = text.Replace(";" + subjectName, "").Replace("\"", "");
-            Debug.Log(subjectName);
-            if (character.character != null)
+            string formattedText = "";
+            bool error = false;
+            try
             {
-                vcam.m_Follow = character.character;
-                vcam.m_LookAt = character.character;
-                Character subject = characters.FirstOrDefault(c => c.name == subjectName);
-                if (subject.character != null)
+                string characterName = text.Split(":")[0].Trim();
+                Character character = characters.FirstOrDefault(c => c.name == characterName);
+
+                string subjectName = text.Split(";").Last();
+                formattedText = text.Replace(";" + subjectName, "").Replace("\"", "").Trim();
+                Debug.Log(subjectName);
+                if (character.character != null)
                 {
-                    Debug.Log(character.character.gameObject);
-                    Debug.Log(character.character.gameObject.GetComponent<global::Engine.Scripts.Character>());
-                    character.character.gameObject.GetComponent<global::Engine.Scripts.Character>().target = subject.character;
+                    vcam.m_Follow = character.character;
+                    vcam.m_LookAt = character.character;
+                    Character subject = characters.FirstOrDefault(c => c.name == subjectName);
+                    if (subject.character != null)
+                    {
+                        character.character.gameObject.GetComponent<global::Engine.Scripts.Character>().target =
+                            subject.character;
+                    }
+
+                    //loop through items
+                    foreach (Item item in items)
+                    {
+                        if (formattedText.ToLower().Contains(item.keyword.ToLower()))
+                        {
+                            character.character.GetComponent<global::Engine.Scripts.Character>()
+                                .EquipItem(item.itemObj);
+                            break;
+                        }
+                    }
+
+                    subtitles.text = formattedText;
                 }
-                subtitles.text = formattedText;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error parsing dialogue: " + e);
+                error = true;
             }
 
-            yield return new WaitForSeconds(formattedText.Length / 10f);
+            if (!error)
+            {
+                yield return new WaitForSeconds(formattedText.Length / 10f);
+            }
         }
         _isDoingDialogue = false;
     }
